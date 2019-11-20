@@ -12,15 +12,15 @@ public class BlueFront extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot = new Robot(hardwareMap);
 
-        robot.drive.setPoseEstimate(new Pose2d(61.75,-36, 90));
+        robot.drive.setPoseEstimate(new Pose2d(61.75,-36, 270));
 
         waitForStart();
 
         robot.drive.followTrajectorySync(
                 robot.drive.trajectoryBuilder()
-                .splineTo(new Pose2d(26,-20,30))
-                .splineTo(new Pose2d(26,-20,0))
-                .splineTo(new Pose2d(36, 50, 0))
+                .splineTo(new Pose2d(26,-20,210))
+                .splineTo(new Pose2d(26,-20,180))
+                .splineTo(new Pose2d(36, 50, 180))
                 .build()
         );
 
@@ -28,8 +28,8 @@ public class BlueFront extends LinearOpMode {
 
         robot.drive.followTrajectorySync(
                 robot.drive.trajectoryBuilder()
-                .splineTo(new Pose2d(36,50,90))
-                .splineTo(new Pose2d(55,48,180))
+                .splineTo(new Pose2d(36,50,270))
+                .splineTo(new Pose2d(55,48,0))
                 .build()
         );
 
@@ -37,7 +37,7 @@ public class BlueFront extends LinearOpMode {
 
         robot.drive.followTrajectorySync(
                 robot.drive.trajectoryBuilder()
-                .splineTo(new Pose2d(59,0, 180))
+                .splineTo(new Pose2d(59,0, 0))
                 .build()
         );
     }

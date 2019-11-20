@@ -13,8 +13,6 @@ public class Outtake {
     ExpansionHubMotor liftTwo; //the motor on the right
     private CRServo liftHorizontalOne; //vex motor controlling horizontal
     private CRServo liftHorizontalTwo; //other one
-    private TouchSensor inwardLimit; //limit switch on the innermost side
-    private TouchSensor outwardLimit; //limit switch determining if the slide is fully extended to the correct position
 
     private final int[] LIFT_POSITIONS = {0,0,0,0,0,0,0,0,0,0,0}; // TODO: fill these with the respective skystones positions
     private int outtakeCount = 0; //the amount of times the robot has outtake aka what level of skystones the robot is on
@@ -35,8 +33,8 @@ public class Outtake {
         liftTwo = hwMap.get(ExpansionHubMotor.class, "lift_two");
         liftHorizontalOne = hwMap.get(CRServo.class, "horizontal_one");
         liftHorizontalTwo = hwMap.get(CRServo.class, "horizontal_two");
-        inwardLimit = hwMap.get(TouchSensor.class, "inward_limit");
-        outwardLimit = hwMap.get(TouchSensor.class, "outward_limit");
+        /* inwardLimit = hwMap.get(TouchSensor.class, "inward_limit");
+        outwardLimit = hwMap.get(TouchSensor.class, "outward_limit"); */
 
         liftOne.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         liftTwo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -110,21 +108,11 @@ public class Outtake {
             liftHorizontalOne.setPower(1);
             liftHorizontalTwo.setPower(1);
 
-            while(!outwardLimit.isPressed())
-            {
-                updateOuttake();
-            }
-
             return true;
         }
         else {
             liftHorizontalOne.setPower(-1);
             liftHorizontalTwo.setPower(-1);
-
-            while(!inwardLimit.isPressed())
-            {
-                updateOuttake();
-            }
 
             return true;
         }
