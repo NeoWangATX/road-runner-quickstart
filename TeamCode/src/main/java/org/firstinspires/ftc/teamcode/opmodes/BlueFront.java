@@ -24,7 +24,7 @@ public class BlueFront extends LinearOpMode {
                 .build()
         );
 
-        robot.foundation.deployForks();
+        //robot.foundation.deployForks();
 
         robot.drive.followTrajectorySync(
                 robot.drive.trajectoryBuilder()
@@ -33,7 +33,7 @@ public class BlueFront extends LinearOpMode {
                 .build()
         );
 
-        robot.foundation.retractForks();
+        //robot.foundation.retractForks();
 
         robot.drive.followTrajectorySync(
                 robot.drive.trajectoryBuilder()
