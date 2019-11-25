@@ -37,4 +37,15 @@ public class Intake {
         leftMotor.setPower(0);
         rightMotor.setPower(0);
     }
+
+    public void reverseIntake()
+    {
+        leftMotor.setPower(-.5);
+        rightMotor.setPower(-.5);
+    }
+
+    public boolean isOn()
+    {
+        return leftMotor.getPower() <= 0.05;
+    }
 }
