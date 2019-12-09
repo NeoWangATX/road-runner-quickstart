@@ -13,21 +13,8 @@ public class PowerTeleOp extends OpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        /*
-          _____   _____  _______ _____  _____  __   _ _______
-         |     | |_____]    |      |   |     | | \  | |______
-         |_____| |          |    __|__ |_____| |  \_| ______|
-
-         */
 
         useAutoPos = false;
-
-        /*
-         _____ __   _ _____ _______
-           |   | \  |   |      |
-         __|__ |  \_| __|__    |
-
-         */
 
         if(!useAutoPos) { robot = new Robot(hardwareMap); }
 
@@ -40,7 +27,8 @@ public class PowerTeleOp extends OpMode {
         while(!isStopRequested())
         {
             //START OF GAMEPAD1 CONTROL
-            robot.drive.driveTeleOp(gamepad1.left_stick_x,gamepad1.left_stick_y,gamepad1.right_stick_x);
+            robot.drive.driveTeleOp(gamepad1.left_stick_x,gamepad1.left_stick_y,gamepad1.right_stick_x, gamepad1.left_stick_button);
+            robot.intake.driveTeleOp();
             //END OF GAMEPAD1 CONTROL
             telemetry.addData("Joysticks: ", Arrays.asList(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad2.right_stick_x));
             telemetry.addData("Motor powers: ", robot.drive.getWheelPositions());
@@ -48,5 +36,10 @@ public class PowerTeleOp extends OpMode {
             //LOGGING
             //endLoop();
         }
+    }
+
+    public void initialize()
+    {
+        robot.intake.setGamepad(gamepad1);
     }
 }

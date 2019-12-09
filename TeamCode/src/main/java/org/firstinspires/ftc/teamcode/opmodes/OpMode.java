@@ -16,6 +16,8 @@ public abstract class OpMode extends LinearOpMode {
 
     static Robot robot;
 
+    public abstract void initialize();
+
     public void logInit()
     {
         telemetry.addData("Initialized...","");

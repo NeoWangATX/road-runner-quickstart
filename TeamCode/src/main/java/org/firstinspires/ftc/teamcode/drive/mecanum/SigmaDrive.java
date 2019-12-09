@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.drive.mecanum;
 
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -28,6 +29,7 @@ public class SigmaDrive extends SampleMecanumDriveBase {
     private ExpansionHubMotor leftFront, leftRear, rightRear, rightFront;
     private List<ExpansionHubMotor> motors;
     private BNO055IMU imu;
+    private LinearOpMode opMode;
 
     public SigmaDrive(HardwareMap hardwareMap) {
         super();
@@ -82,6 +84,12 @@ public class SigmaDrive extends SampleMecanumDriveBase {
 
         // TODO: if desired, use setLocalizer() to change the localization method
         // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
+    }
+
+    public SigmaDrive(HardwareMap hwMap, LinearOpMode opMode)
+    {
+        this(hwMap);
+        this.opMode = opMode;
     }
 
     @Override
@@ -159,7 +167,7 @@ public class SigmaDrive extends SampleMecanumDriveBase {
         return imu.getAngularOrientation().firstAngle;
     }
 
-    public void driveTeleOp(double left_stick_x, double left_stick_y, double right_stick_x)
+    public void driveTeleOp(double left_stick_x, double left_stick_y, double right_stick_x, boolean slow)
     {
         double lf = left_stick_y - (left_stick_x)  - right_stick_x;
         double rf = left_stick_y  + (left_stick_x) + right_stick_x;
@@ -176,7 +184,14 @@ public class SigmaDrive extends SampleMecanumDriveBase {
             rr /= wheelPowers[3];
         }
 
-        this.setMotorPowers(lf,lr,rr,rf);
+        if(slow)
+        {
+            this.setMotorPowers(lf * SLOW_SPEED_SCALE, lr * SLOW_SPEED_SCALE, rr * SLOW_SPEED_SCALE, rf * SLOW_SPEED_SCALE);
+        }
+        else
+        {
+            this.setMotorPowers(lf,lr,rr,rf);
+        }
     }
 
     public List<Double> getWheelPowers()

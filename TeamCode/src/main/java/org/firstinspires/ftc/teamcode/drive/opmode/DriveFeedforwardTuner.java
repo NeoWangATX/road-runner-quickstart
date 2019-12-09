@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.robotcore.internal.system.Misc;
 import org.firstinspires.ftc.teamcode.drive.mecanum.SampleMecanumDriveBase;
 import org.firstinspires.ftc.teamcode.drive.mecanum.SampleMecanumDriveREV;
+import org.firstinspires.ftc.teamcode.drive.mecanum.SigmaDrive;
 import org.firstinspires.ftc.teamcode.util.LoggingUtil;
 
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.getMaxRpm;
@@ -34,7 +35,7 @@ public class DriveFeedforwardTuner extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDriveBase drive = new SampleMecanumDriveREV(hardwareMap);
+        SigmaDrive drive = new SigmaDrive(hardwareMap);
 
         NanoClock clock = NanoClock.system();
 
