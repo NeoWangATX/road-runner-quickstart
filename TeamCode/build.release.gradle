@@ -11,8 +11,14 @@ dependencies {
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.9'
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.9'
 
+<<<<<<< HEAD
     implementation 'com.acmerobotics.roadrunner:core:0.4.7'
     implementation 'com.acmerobotics.dashboard:dashboard:0.3.6'
+=======
+    implementation 'com.acmerobotics.roadrunner:core:0.4.6'
+    implementation 'com.acmerobotics.dashboard:dashboard:0.3.4'
+>>>>>>> d1ce1729a296c2fdef0ce2a7ad76c4556fb183cc
 
     implementation 'org.openftc:rev-extensions-2:1.2'
+    implementation 'com.github.dogecv:dogecv:2020.4-alpha'
 }
