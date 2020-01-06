@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.foundation;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+@TeleOp
 public class FoundationTest extends LinearOpMode {
     private Foundation foundation;
     @Override
@@ -20,6 +22,10 @@ public class FoundationTest extends LinearOpMode {
             {
                 foundation.retractForks();
             }
+
+            telemetry.addData("Left position: ", foundation.getLeftServoPosition());
+            telemetry.addData("Right position: ", foundation.getRightServoPosition());
+            telemetry.update();
         }
     }
 }

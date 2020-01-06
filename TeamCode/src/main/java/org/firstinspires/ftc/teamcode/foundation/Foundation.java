@@ -25,4 +25,14 @@ public class Foundation {
         leftFork.setPosition(0);
         rightFork.setPosition(0);
     }
+
+    public double getLeftServoPosition()
+    {
+        return leftFork.getPosition();
+    }
+
+    public double getRightServoPosition()
+    {
+        return rightFork.getPosition();
+    }
 }

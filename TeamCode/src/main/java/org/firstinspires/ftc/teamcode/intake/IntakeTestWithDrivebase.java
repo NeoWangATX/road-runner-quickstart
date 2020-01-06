@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.intake;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -21,10 +22,11 @@ public class IntakeTestWithDrivebase extends LinearOpMode {
         waitForStart();
 
         intake.floatIntake();
+        drive.setGamepad(gamepad1);
 
         while(opModeIsActive())
         {
-            drive.driveTeleOp(gamepad1.left_stick_x,gamepad1.left_stick_y,gamepad1.right_stick_x, gamepad1.left_stick_button);
+            drive.driveTeleOp();
 
             if(gamepad1.right_bumper)
             {
@@ -36,7 +38,7 @@ public class IntakeTestWithDrivebase extends LinearOpMode {
             }
             else
             {
-                intake.intakeOff();
+                intake.intakeOn();
             }
         }
     }

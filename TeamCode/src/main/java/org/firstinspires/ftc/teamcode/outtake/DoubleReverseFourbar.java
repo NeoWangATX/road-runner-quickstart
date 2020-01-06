@@ -10,7 +10,7 @@ import org.openftc.revextensions2.ExpansionHubMotor;
 public class DoubleReverseFourbar {
     private ExpansionHubMotor liftOne; //the motor
     private final int MOTOR_LOWERBOUND_TICKS = 0; //lower limit
-    private final int MOTOR_UPPERBOUND_TICKS = 1000; //upper limit
+    private final int MOTOR_UPPERBOUND_TICKS = 780; //upper limit
     private final int TOTAL_EXTENSION = Math.abs(MOTOR_UPPERBOUND_TICKS - MOTOR_LOWERBOUND_TICKS); //total extension in ticks
 
     private final double DANGER_CONSTANT = 0.2; //percent / 100 extension where the motors should start slowing down to avoid damaging the robot
@@ -21,8 +21,8 @@ public class DoubleReverseFourbar {
     {
         liftOne = hwMap.get(ExpansionHubMotor.class, "lift_motor");
         liftOne.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        liftOne.setDirection(DcMotorSimple.Direction.FORWARD);
-        liftOne.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        liftOne.setDirection(DcMotorSimple.Direction.REVERSE);
+        //liftOne.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         liftOne.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
@@ -31,8 +31,29 @@ public class DoubleReverseFourbar {
         liftOne.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     }
 
+    public void resetEncoders()
+    {
+        liftOne.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        liftOne.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
     public void powerDriveTeleOp(double power, double gamepad) //drive for teleop
     {
+        if(gamepad > 0.05)
+        {
+            liftOne.setTargetPosition(MOTOR_UPPERBOUND_TICKS);
+            liftOne.setPower(gamepad * .8);
+        }
+        else if(gamepad < -0.05)
+        {
+            liftOne.setTargetPosition(MOTOR_LOWERBOUND_TICKS);
+            liftOne.setPower(gamepad * .8);
+        }
+        else
+        {
+            liftOne.setPower(0);
+        }
+        /*
         if(dangerZone()) //if motor is past the extension
         {
             if(liftOne.getCurrentPosition() < MOTOR_LOWERBOUND_TICKS) //lower than functional
@@ -62,12 +83,13 @@ public class DoubleReverseFourbar {
             {
                 liftOne.setPower(DANGER_SPEED_CONSTANT * SPEED_CONSTANT * Range.clip(gamepad,-1,1));
             }
-        }
+        } */
     }
 
     public boolean dangerZone() //if motor is near its limit
     {
-        return getExtensionDecimal() > 1 - DANGER_CONSTANT || getExtensionDecimal() < DANGER_CONSTANT; //returns whether or not it is in the zone
+        return true;
+        //return getExtensionDecimal() > 1 - DANGER_CONSTANT || getExtensionDecimal() < DANGER_CONSTANT; //returns whether or not it is in the zone
     }
 
     public double getExtensionDecimal() //returns a decimal [0,1] of how far the motor is extended

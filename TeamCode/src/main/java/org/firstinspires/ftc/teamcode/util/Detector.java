@@ -145,19 +145,19 @@ public class Detector extends DogeCVDetector {
     private static SkystoneState calcSkystoneState(double middleX, Alliance alliance) {
         if (alliance == Alliance.BLUE) {
             if (middleX < BLUE_MIDDLE_LOWER_CUTOFF) {
-                return SkystoneState.LOWER;
+                return SkystoneState.UPPER;
             } else if (middleX < BLUE_MIDDLE_UPPER_CUTOFF) {
                 return SkystoneState.MIDDLE;
             } else {
-                return SkystoneState.UPPER;
+                return SkystoneState.LOWER;
             }
         } else {
             if (middleX < RED_LOWER_MIDDLE_CUTOFF) {
-                return SkystoneState.LOWER;
+                return SkystoneState.UPPER;
             } else if (middleX < RED_MIDDLE_UPPER_CUTOFF) {
                 return SkystoneState.MIDDLE;
             } else {
-                return SkystoneState.UPPER;
+                return SkystoneState.LOWER;
             }
         }
     }

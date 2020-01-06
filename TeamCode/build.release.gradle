@@ -15,8 +15,8 @@ dependencies {
     implementation 'com.acmerobotics.roadrunner:core:0.4.7'
     implementation 'com.acmerobotics.dashboard:dashboard:0.3.6'
 
-    implementation 'com.acmerobotics.roadrunner:core:0.4.6'
-    implementation 'com.acmerobotics.dashboard:dashboard:0.3.4'
+    implementation 'com.acmerobotics.roadrunner:core:0.4.7'
+    implementation 'com.acmerobotics.dashboard:dashboard:0.3.6'
 
     implementation 'org.openftc:rev-extensions-2:1.2'
     implementation 'com.github.dogecv:dogecv:2020.4-alpha'

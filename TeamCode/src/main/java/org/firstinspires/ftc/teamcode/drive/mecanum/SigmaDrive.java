@@ -1,31 +1,27 @@
 package org.firstinspires.ftc.teamcode.drive.mecanum;
 
-<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/mecanum/SampleMecanumDriveREVOptimized.java
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MOTOR_VELO_PID;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.RUN_USING_ENCODER;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.encoderTicksToInches;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.getMotorVelocityF;
 
 import android.support.annotation.NonNull;
-=======
->>>>>>> d1ce1729a296c2fdef0ce2a7ad76c4556fb183cc:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/mecanum/SigmaDrive.java
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
+import com.acmerobotics.roadrunner.localization.ThreeTrackingWheelLocalizer;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/mecanum/SampleMecanumDriveREVOptimized.java
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
-=======
 
-import org.firstinspires.ftc.teamcode.util.LynxOptimizedI2cFactory;
+import org.firstinspires.ftc.teamcode.drive.localizer.StandardTrackingWheelLocalizer;
+import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
 import org.jetbrains.annotations.NotNull;
->>>>>>> d1ce1729a296c2fdef0ce2a7ad76c4556fb183cc:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/mecanum/SigmaDrive.java
 import org.openftc.revextensions2.ExpansionHubEx;
 import org.openftc.revextensions2.ExpansionHubMotor;
 import org.openftc.revextensions2.RevBulkData;
@@ -33,13 +29,10 @@ import org.openftc.revextensions2.RevBulkData;
 
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.*;
 
-<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/mecanum/SampleMecanumDriveREVOptimized.java
-=======
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
->>>>>>> d1ce1729a296c2fdef0ce2a7ad76c4556fb183cc:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/mecanum/SigmaDrive.java
 /*
  * Optimized mecanum drive implementation for REV ExHs. The time savings may significantly improve
  * trajectory following performance with moderate additional complexity.
@@ -48,6 +41,7 @@ public class SigmaDrive extends SampleMecanumDriveBase {
     private ExpansionHubEx hub;
     private ExpansionHubMotor leftFront, leftRear, rightRear, rightFront;
     private List<ExpansionHubMotor> motors;
+    private Gamepad gamepad;
     private BNO055IMU imu;
     private LinearOpMode opMode;
 
@@ -65,10 +59,6 @@ public class SigmaDrive extends SampleMecanumDriveBase {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu.initialize(parameters);
-
-        // TODO: if your hub is mounted vertically, remap the IMU axes so that the z-axis points
-        // upward (normal to the floor) using a command like the following:
-        // BNO055IMUUtil.remapAxes(imu, AxesOrder.XYZ, AxesSigns.NPN);
 
         leftFront = hardwareMap.get(ExpansionHubMotor.class, "leftFront");
         leftRear = hardwareMap.get(ExpansionHubMotor.class, "leftRear");
@@ -93,9 +83,6 @@ public class SigmaDrive extends SampleMecanumDriveBase {
             setPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
         }
 
-<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/mecanum/SampleMecanumDriveREVOptimized.java
-        // TODO: reverse any motors using DcMotor.setDirection()
-=======
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightRear.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -103,11 +90,14 @@ public class SigmaDrive extends SampleMecanumDriveBase {
 
         // TODO: set the tuned coefficients from DriveVelocityPIDTuner if using RUN_USING_ENCODER
         // setPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, ...);
->>>>>>> d1ce1729a296c2fdef0ce2a7ad76c4556fb183cc:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/mecanum/SigmaDrive.java
 
         //this.setPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, DRIVE_PID);
 
-        // TODO: if desired, use setLocalizer() to change the localization method
+        //this.setLocalizer(new MecanumLocalizer(this, false));
+
+        // TODO: Wait for odometry
+        setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap));
+
         // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
     }
 
@@ -115,6 +105,19 @@ public class SigmaDrive extends SampleMecanumDriveBase {
     {
         this(hwMap);
         this.opMode = opMode;
+    }
+
+    public void setGamepad(Gamepad gamepad)
+    {
+        this.gamepad = gamepad;
+    }
+
+    public void autoReverse()
+    {
+        leftRear.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     @Override
@@ -126,16 +129,13 @@ public class SigmaDrive extends SampleMecanumDriveBase {
     @Override
     public void setPIDCoefficients(DcMotor.RunMode runMode, PIDCoefficients coefficients) {
         for (ExpansionHubMotor motor : motors) {
-<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/mecanum/SampleMecanumDriveREVOptimized.java
             motor.setPIDFCoefficients(runMode, new PIDFCoefficients(
-                    coefficients.kP, coefficients.kI, coefficients.kD, getMotorVelocityF()
-=======
+                    coefficients.kP, coefficients.kI, coefficients.kD, getMotorVelocityF()));
             motor.setPIDCoefficients(runMode, new com.qualcomm.robotcore.hardware.PIDCoefficients(
                     coefficients.kP,
                     coefficients.kI,
                     coefficients.kD
->>>>>>> d1ce1729a296c2fdef0ce2a7ad76c4556fb183cc:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/mecanum/SigmaDrive.java
-            ));
+           ));
         }
     }
 
@@ -212,12 +212,12 @@ public class SigmaDrive extends SampleMecanumDriveBase {
         return imu.getAngularOrientation().firstAngle;
     }
 
-    public void driveTeleOp(double left_stick_x, double left_stick_y, double right_stick_x, boolean slow)
+    public void driveTeleOp()
     {
-        double lf = left_stick_y - (left_stick_x)  - right_stick_x;
-        double rf = left_stick_y  + (left_stick_x) + right_stick_x;
-        double lr = left_stick_y  + (left_stick_x)  - right_stick_x;
-        double rr = left_stick_y - (left_stick_x) + right_stick_x;
+        double lf = gamepad.left_stick_y - (gamepad.left_stick_x)  - gamepad.right_stick_x;
+        double rf = gamepad.left_stick_y  + (gamepad.left_stick_x) + gamepad.right_stick_x;
+        double lr = gamepad.left_stick_y  + (gamepad.left_stick_x)  - gamepad.right_stick_x;
+        double rr = gamepad.left_stick_y - (gamepad.left_stick_x) + gamepad.right_stick_x;
 
         //Move range to between 0 and +1, if not already
         double[] wheelPowers = {rf, lf, lr, rr};
@@ -229,7 +229,7 @@ public class SigmaDrive extends SampleMecanumDriveBase {
             rr /= wheelPowers[3];
         }
 
-        if(slow)
+        if(gamepad.left_trigger > 0.1)
         {
             this.setMotorPowers(lf * SLOW_SPEED_SCALE, lr * SLOW_SPEED_SCALE, rr * SLOW_SPEED_SCALE, rf * SLOW_SPEED_SCALE);
         }

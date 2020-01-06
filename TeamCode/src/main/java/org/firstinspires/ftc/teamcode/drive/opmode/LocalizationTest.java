@@ -27,14 +27,10 @@ public class LocalizationTest extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-<<<<<<< HEAD
+
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        SampleMecanumDriveBase drive = new SampleMecanumDriveREV(hardwareMap);
-=======
         SigmaDrive drive = new SigmaDrive(hardwareMap);
->>>>>>> d1ce1729a296c2fdef0ce2a7ad76c4556fb183cc
-
         waitForStart();
 
         while (!isStopRequested()) {
@@ -66,7 +62,7 @@ public class LocalizationTest extends LinearOpMode {
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());
-            telemetry.addData("heading", poseEstimate.getHeading());
+            telemetry.addData("heading", (poseEstimate.getHeading()));
             telemetry.update();
         }
     }
