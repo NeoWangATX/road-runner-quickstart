@@ -2,16 +2,25 @@ package org.firstinspires.ftc.teamcode.outtake;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
 import org.openftc.revextensions2.ExpansionHubMotor;
 
 public class DoubleReverseFourbar {
+
+    private Gamepad gamepad;
+
     private ExpansionHubMotor liftOne; //the motor
     private final int MOTOR_LOWERBOUND_TICKS = 0; //lower limit
     private final int MOTOR_UPPERBOUND_TICKS = 780; //upper limit
     private final int TOTAL_EXTENSION = Math.abs(MOTOR_UPPERBOUND_TICKS - MOTOR_LOWERBOUND_TICKS); //total extension in ticks
+
+    private int STACK_LEVEL = 0;
+
+    private boolean PREVIOUS_INCREMENT_STATE_UP = false;
+    private boolean PREVIOUS_INCREMENT_STATE_DOWN = false;
 
     private final double DANGER_CONSTANT = 0.2; //percent / 100 extension where the motors should start slowing down to avoid damaging the robot
     private final double DANGER_SPEED_CONSTANT = 0.6; //scaling done when the robot is in the "danger zone"
@@ -26,6 +35,11 @@ public class DoubleReverseFourbar {
         liftOne.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
+    public void setGamepad(Gamepad gamepad)
+    {
+        this.gamepad = gamepad;
+    }
+
     public void motorFloat() //floats the motor so it doesn't break at zero power
     {
         liftOne.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -37,22 +51,47 @@ public class DoubleReverseFourbar {
         liftOne.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    public void powerDriveTeleOp(double power, double gamepad) //drive for teleop
+    public void powerDriveTeleOp(double power) //drive for teleop
     {
-        if(gamepad > 0.05)
-        {
-            liftOne.setTargetPosition(MOTOR_UPPERBOUND_TICKS);
-            liftOne.setPower(gamepad * .8);
+        if(gamepad.left_bumper) {
+            if (gamepad.right_stick_y > 0.05) {
+                liftOne.setTargetPosition(MOTOR_UPPERBOUND_TICKS);
+                liftOne.setPower(gamepad.right_stick_y * .8);
+            } else if (gamepad.right_stick_y < -0.05) {
+                liftOne.setTargetPosition(MOTOR_LOWERBOUND_TICKS);
+                liftOne.setPower(gamepad.right_stick_y * .8);
+            } else {
+                if (liftOne.getCurrentPosition() < 100) {
+                    liftOne.setPower(0);
+                } else {
+                    liftOne.setTargetPosition(liftOne.getCurrentPosition());
+                    liftOne.setPower(.2);
+                }
+            }
         }
-        else if(gamepad < -0.05)
+
+        if(PREVIOUS_INCREMENT_STATE_UP && !gamepad.dpad_up)
         {
-            liftOne.setTargetPosition(MOTOR_LOWERBOUND_TICKS);
-            liftOne.setPower(gamepad * .8);
+            STACK_LEVEL++;
         }
-        else
+
+        PREVIOUS_INCREMENT_STATE_UP = gamepad.dpad_up;
+
+        if(PREVIOUS_INCREMENT_STATE_DOWN && !gamepad.dpad_down)
         {
-            liftOne.setPower(0);
+            STACK_LEVEL--;
         }
+
+        PREVIOUS_INCREMENT_STATE_DOWN = gamepad.dpad_down;
+
+        if(gamepad.a)
+        {
+            switch(STACK_LEVEL)
+            {
+                // TODO: all the stack levels
+            }
+        }
+
         /*
         if(dangerZone()) //if motor is past the extension
         {

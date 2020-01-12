@@ -38,6 +38,8 @@ import java.util.List;
  * trajectory following performance with moderate additional complexity.
  */
 public class SigmaDrive extends SampleMecanumDriveBase {
+    private boolean slow = false;
+    private final double SLOW_SPEED_SCALE = .4;
     private ExpansionHubEx hub;
     private ExpansionHubMotor leftFront, leftRear, rightRear, rightFront;
     private List<ExpansionHubMotor> motors;
@@ -96,7 +98,7 @@ public class SigmaDrive extends SampleMecanumDriveBase {
         //this.setLocalizer(new MecanumLocalizer(this, false));
 
         // TODO: Wait for odometry
-        setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap));
+        this.setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap));
 
         // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
     }
@@ -178,10 +180,23 @@ public class SigmaDrive extends SampleMecanumDriveBase {
 
     @Override
     public void setMotorPowers(double v, double v1, double v2, double v3) {
+        if(slow)
+        {
+            v *= SLOW_SPEED_SCALE;
+            v1 *= SLOW_SPEED_SCALE;
+            v2 *= SLOW_SPEED_SCALE;
+            v3 *= SLOW_SPEED_SCALE;
+        }
+
         leftFront.setPower(v);
         leftRear.setPower(v1);
         rightRear.setPower(v2);
         rightFront.setPower(v3);
+    }
+
+    public void setSlow(boolean mode)
+    {
+        this.slow = mode;
     }
 
     public void setTargetPositions(int v, int v1, int v2, int v3)

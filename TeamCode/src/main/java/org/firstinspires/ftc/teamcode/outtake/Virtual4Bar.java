@@ -19,6 +19,11 @@ public class Virtual4Bar {
         gripperServo = hwMap.get(ExpansionHubServo.class, "gripper_servo");
     }
 
+    public void setGamepad(Gamepad gamepad)
+    {
+        this.gamepad = gamepad;
+    }
+
     public Virtual4Bar(HardwareMap hwMap, OpMode opmode)
     {
         this(hwMap);
@@ -29,6 +34,36 @@ public class Virtual4Bar {
     {
         this(hwMap);
         this.gamepad = gamepad;
+    }
+
+    public void driveTeleOp()
+    {
+        /* if(gamepad.dpad_up)
+        {
+            armServo.setPosition(1);
+        }
+        else if(gamepad.dpad_down)
+        {
+            armServo.setPosition(0);
+        }
+        else if(gamepad.x)
+        {
+            armServo.setPosition(.2);
+        }
+        else if(gamepad.y)
+        {
+            armServo.setPosition(.8);
+        }
+        else if(gamepad.dpad_left)
+        {
+            gripperServo.setPosition(1);
+        }
+        else if(gamepad.dpad_right)
+        {
+            gripperServo.setPosition(0);
+        } */
+
+        armServo.setPosition(gamepad.left_stick_y/2 + .5);
     }
 
     public void outtake()

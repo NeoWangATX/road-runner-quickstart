@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.foundation;
 
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.openftc.revextensions2.ExpansionHubServo;
@@ -7,6 +8,7 @@ import org.openftc.revextensions2.ExpansionHubServo;
 public class Foundation {
     private ExpansionHubServo leftFork;
     private ExpansionHubServo rightFork;
+    private Gamepad gamepad;
 
     public Foundation(HardwareMap hwMap)
     {
@@ -17,13 +19,30 @@ public class Foundation {
     public void deployForks()
     {
         leftFork.setPosition(1);
-        rightFork.setPosition(1);
+        rightFork.setPosition(0);
+    }
+
+    public void driveTeleOp()
+    {
+        if(gamepad.a)
+        {
+            this.deployForks();
+        }
+        else if(gamepad.b)
+        {
+            this.retractForks();
+        }
+    }
+
+    public void setGamepad(Gamepad pad)
+    {
+        this.gamepad = pad;
     }
 
     public void retractForks()
     {
         leftFork.setPosition(0);
-        rightFork.setPosition(0);
+        rightFork.setPosition(1);
     }
 
     public double getLeftServoPosition()
