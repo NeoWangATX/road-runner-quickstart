@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.drive.localizer.StandardTrackingWheelLocalizer;
 import org.firstinspires.ftc.teamcode.elements.Alliance;
 import org.firstinspires.ftc.teamcode.elements.SkystoneState;
 import org.firstinspires.ftc.teamcode.util.Detector;
@@ -23,9 +24,9 @@ public class BlueFront extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         robot = new Robot(hardwareMap);
-        robot.drive.autoReverse();
 
         robot.drive.setPoseEstimate(new Pose2d(-36.0,62.75, Math.toRadians(180.0)));
+        robot.drive.setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap));
         startCameraDetection(Alliance.BLUE);
 
         telemetry.addData("Initialized","");

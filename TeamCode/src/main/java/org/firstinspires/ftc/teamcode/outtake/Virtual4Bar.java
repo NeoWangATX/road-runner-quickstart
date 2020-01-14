@@ -38,7 +38,7 @@ public class Virtual4Bar {
 
     public void driveTeleOp()
     {
-        /* if(gamepad.dpad_up)
+        if(gamepad.dpad_up)
         {
             armServo.setPosition(1);
         }
@@ -61,9 +61,12 @@ public class Virtual4Bar {
         else if(gamepad.dpad_right)
         {
             gripperServo.setPosition(0);
-        } */
+        }
 
-        armServo.setPosition(gamepad.left_stick_y/2 + .5);
+        /* if(Math.abs(gamepad.left_stick_y) > 0.05)
+        {
+            armServo.setPosition(armServo.getPosition() + gamepad.left_stick_y / 2);
+        } */
     }
 
     public void outtake()

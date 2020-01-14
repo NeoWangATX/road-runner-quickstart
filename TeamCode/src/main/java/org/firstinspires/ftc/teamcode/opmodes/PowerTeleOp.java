@@ -32,6 +32,7 @@ public class PowerTeleOp extends OpMode {
         robot.intake.setGamepad(gamepad1);
         robot.drive.setGamepad(gamepad1);
         robot.foundation.setGamepad(gamepad1);
+        robot.dr4b.setGamepad(gamepad2);
         robot.v4b.setGamepad(gamepad2);
 
         logInit();

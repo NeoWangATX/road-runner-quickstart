@@ -44,7 +44,7 @@ public class SigmaDrive extends SampleMecanumDriveBase {
     private ExpansionHubMotor leftFront, leftRear, rightRear, rightFront;
     private List<ExpansionHubMotor> motors;
     private Gamepad gamepad;
-    private BNO055IMU imu;
+    //private BNO055IMU imu;
     private LinearOpMode opMode;
 
     public SigmaDrive(HardwareMap hardwareMap) {
@@ -57,10 +57,10 @@ public class SigmaDrive extends SampleMecanumDriveBase {
         // if your motors are split between hubs, **you will need to add another bulk read**
         hub = hardwareMap.get(ExpansionHubEx.class, "hub");
 
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
-        imu.initialize(parameters);
+        //imu = hardwareMap.get(BNO055IMU.class, "imu");
+        //BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        //parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
+        //imu.initialize(parameters);
 
         leftFront = hardwareMap.get(ExpansionHubMotor.class, "leftFront");
         leftRear = hardwareMap.get(ExpansionHubMotor.class, "leftRear");
@@ -224,7 +224,8 @@ public class SigmaDrive extends SampleMecanumDriveBase {
 
     @Override
     public double getRawExternalHeading() {
-        return imu.getAngularOrientation().firstAngle;
+        //return imu.getAngularOrientation().firstAngle;
+        return 0.0;
     }
 
     public void driveTeleOp()
