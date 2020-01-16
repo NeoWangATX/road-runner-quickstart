@@ -85,10 +85,10 @@ public class SigmaDrive extends SampleMecanumDriveBase {
             setPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
         }
 
-        leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightRear.setDirection(DcMotorSimple.Direction.FORWARD);
-        rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftRear.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // TODO: set the tuned coefficients from DriveVelocityPIDTuner if using RUN_USING_ENCODER
         // setPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, ...);
@@ -222,6 +222,14 @@ public class SigmaDrive extends SampleMecanumDriveBase {
         }
     }
 
+    public void motorFloat()
+    {
+        for(ExpansionHubMotor motor : motors)
+        {
+            motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        }
+    }
+
     @Override
     public double getRawExternalHeading() {
         //return imu.getAngularOrientation().firstAngle;
@@ -247,11 +255,11 @@ public class SigmaDrive extends SampleMecanumDriveBase {
 
         if(gamepad.left_trigger > 0.1)
         {
-            this.setMotorPowers(lf * SLOW_SPEED_SCALE, lr * SLOW_SPEED_SCALE, rr * SLOW_SPEED_SCALE, rf * SLOW_SPEED_SCALE);
+            this.setMotorPowers(-lf * SLOW_SPEED_SCALE, -lr * SLOW_SPEED_SCALE, -rr * SLOW_SPEED_SCALE, -rf * SLOW_SPEED_SCALE);
         }
         else
         {
-            this.setMotorPowers(lf,lr,rr,rf);
+            this.setMotorPowers(-lf,-lr,-rr,-rf);
         }
     }
 

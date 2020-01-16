@@ -31,6 +31,7 @@ public class LocalizationTest extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         SigmaDrive drive = new SigmaDrive(hardwareMap);
+        drive.motorFloat();
         waitForStart();
 
         while (!isStopRequested()) {
