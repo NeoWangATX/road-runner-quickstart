@@ -36,9 +36,9 @@ public class LocalizationTest extends LinearOpMode {
 
         while (!isStopRequested()) {
             Pose2d baseVel = new Pose2d(
-                    -gamepad1.left_stick_y/4,
-                    -gamepad1.left_stick_x/4,
-                    -gamepad1.right_stick_x/4
+                    -gamepad1.left_stick_y,
+                    -gamepad1.left_stick_x,
+                    -gamepad1.right_stick_x
             );
 
             Pose2d vel;
@@ -64,7 +64,7 @@ public class LocalizationTest extends LinearOpMode {
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());
             telemetry.addData("heading",
-                    (poseEstimate.getHeading()));
+                    (Math.toDegrees(poseEstimate.getHeading())));
             telemetry.update();
         }
     }
